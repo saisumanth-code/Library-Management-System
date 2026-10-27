@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Users</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+  <link rel="stylesheet" href="/css/global.css?v=<%= assetVersion %>"/>
+  <link rel="stylesheet" href="/css/admin.css?v=<%= assetVersion %>"/>
+  <link rel="stylesheet" href="/css/mobile-responsive.css?v=<%= assetVersion %>"/>
+</head>
+<body>
+  <%- include('./partials/navbar') %>
+  <div class="admin-container">
+    <h1 class="admin-heading">Manage Users</h1>
+    <% if (message) { %>
+      <div class="alert-banner alert-success"><%= message %></div>
+    <% } %>
+    <form method="GET" action="/admin/users" class="admin-search">
+      <input type="text" name="q" value="<%= q %>" placeholder="Search by username or email..."/>
+      <button type="submit" class="btn">Search</button>
+    </form>
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr><th>Username</th><th>Email</th><th>Verified</th><th>Joined</th></tr>
+        </thead>
+        <tbody>
+          <% users.forEach(user => { %>
+            <tr>
+              <td><%= user.username %></td>
+              <td><%= user.email %></td>
+              <td><%= user.isVerified ? '✅' : '❌ Not verified' %></td>
+              <td><%= new Date(user.createdAt).toLocaleDateString('en-IN') %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

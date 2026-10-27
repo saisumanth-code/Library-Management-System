@@ -1,0 +1,150 @@
+body {
+  background:
+    radial-gradient(circle at top left, rgba(200,151,58,0.08), transparent 26%),
+    linear-gradient(180deg, #fcfaf6 0%, #f5efe3 100%);
+  min-height: 100vh;
+}
+
+/* ── Browse Header ───────────────────────────────────────────────── */
+.browse-header {
+  background:
+    radial-gradient(circle at top right, rgba(200,151,58,0.14), transparent 22%),
+    linear-gradient(135deg, var(--deep) 0%, var(--navy) 100%);
+  padding: 32px 40px;
+  border-bottom: 1px solid rgba(200,151,58,0.18);
+  box-shadow: 0 18px 40px rgba(13,27,42,0.16);
+}
+
+.browse-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.browse-title-row h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--cream);
+  display: flex; align-items: center; gap: 10px;
+}
+.browse-title-row h1 i { color: var(--gold-light); font-size: 1.4rem; }
+
+/* ── Search Bar ──────────────────────────────────────────────────── */
+.search-wrap {
+  display: flex;
+  align-items: center;
+  background: rgba(247,242,232,0.07);
+  border: 1.5px solid rgba(247,242,232,0.20);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  max-width: 700px;
+  width: 100%;
+  box-shadow: 0 10px 24px rgba(13,27,42,0.14);
+}
+.search-wrap:focus-within {
+  border-color: rgba(200,151,58,0.50);
+  box-shadow: 0 0 0 3px rgba(200,151,58,0.14);
+  background: rgba(247,242,232,0.10);
+}
+
+.search-icon {
+  padding: 0 16px;
+  color: rgba(247,242,232,0.55);
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+#search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--cream);
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 14px 0;
+}
+#search-input::placeholder { color: rgba(247,242,232,0.45); }
+
+#search-btn {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  border: none;
+  padding: 0 22px;
+  height: 100%;
+  color: var(--deep);
+  font-size: 15px;
+  cursor: pointer;
+  display: grid; place-items: center;
+  min-height: 50px;
+  transition: filter var(--transition);
+}
+#search-btn:hover { filter: brightness(1.08); }
+#search-btn:hover { transform: translateY(-1px); }
+
+/* ── Search Meta ─────────────────────────────────────────────────── */
+.search-meta {
+  color: rgba(247,242,232,0.55);
+  font-size: 0.82rem; margin-top: 10px;
+}
+.search-meta strong { color: var(--gold-light); }
+
+/* ── Results Layout ──────────────────────────────────────────────── */
+.browse-container {
+  max-width: 1180px; margin: 0 auto;
+  padding: 28px;
+}
+
+.results-label {
+  font-size: 0.78rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.results-label::after {
+  content: ""; flex: 1; height: 1px; background: var(--border);
+}
+
+/* book-list is in global.css */
+#book-results.book-list {
+  padding: 0;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+.no-results {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 72px 24px;
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.82);
+  border: 1px solid rgba(13,27,42,0.08);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+}
+.no-results i { font-size: 48px; color: var(--parchment-2); margin-bottom: 16px; display: block; }
+.no-results h3 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.5rem; font-weight: 700;
+  color: var(--text-sub); margin-bottom: 8px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 700px) {
+  .browse-header { padding: 24px 20px; }
+  .browse-container { padding: 20px 16px; }
+  #book-results.book-list { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

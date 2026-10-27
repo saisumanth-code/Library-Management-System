@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — MyLibrary</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+  <link rel="stylesheet" href="/css/global.css?v=<%= assetVersion %>"/>
+  <link rel="stylesheet" href="/css/dashboard.css?v=<%= assetVersion %>"/>
+  <link rel="stylesheet" href="/css/mobile-responsive.css?v=<%= assetVersion %>"/>
+</head>
+<body>
+
+  <!-- ── Navbar ──────────────────────────────────────────────────── -->
+  <header>
+    <nav class="navbar">
+      <a href="/dashboard" class="nav-brand">
+        <div class="nav-brand-icon"><i class="fa-solid fa-book-open"></i></div>
+        <div>
+          <span class="nav-brand-name">MyLibrary</span>
+          <span class="nav-brand-sub">Digital Collection</span>
+        </div>
+      </a>
+
+      <div class="nav-divider"></div>
+
+      <div class="nav-right">
+        <a href="/browse" class="nav-link">
+          <i class="fa-solid fa-magnifying-glass"></i> Browse
+        </a>
+        <a href="/issued_books" class="nav-link">
+          <i class="fa-solid fa-book-open"></i> My Books
+        </a>
+        <button class="btn-profile" id="profileBtn" aria-label="View profile">
+          <i class="fa-solid fa-circle-user"></i>
+        </button>
+        <form action="/logout" method="POST" style="margin:0;">
+          <button type="submit" class="btn-nav-outline">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+          </button>
+        </form>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ── Main ────────────────────────────────────────────────────── -->
+  <main class="dashboard-page">
+
+    <!-- Hero Banner -->
+    <section class="dash-hero">
+      <div class="dash-copy">
+        <div class="dash-eyebrow">
+          <i class="fa-solid fa-sun"></i>
+          Your Library, Curated
+        </div>
+        <h1>Welcome back,<br/><span><%= username %></span></h1>
+        <p>Manage your reading, browse new titles, and keep track of everything you have borrowed — all from one calm, focused space.</p>
+      </div>
+
+      <div class="dash-actions">
+        <a href="/browse" class="dash-btn dash-btn-browse">
+          <div class="dash-btn-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+          <div>
+            <div style="font-size:0.75rem;opacity:0.75;margin-bottom:1px;">Explore catalog</div>
+            Browse &amp; Search Books
+          </div>
+        </a>
+        <a href="/issued_books" class="dash-btn dash-btn-issued">
+          <div class="dash-btn-icon"><i class="fa-solid fa-book-open"></i></div>
+          <div>
+            <div style="font-size:0.75rem;opacity:0.65;margin-bottom:1px;">Manage returns</div>
+            My Issued Books
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Recently Added Books -->
+    <section class="books-panel">
+      <div class="section-header">
+        <div>
+          <div class="section-eyebrow">
+            <i class="fa-solid fa-fire"></i> Fresh Arrivals
+          </div>
+          <h2 class="section-title">Recently Added Books</h2>
+          <p class="section-subtitle">The latest titles added to our catalog.</p>
+        </div>
+        <a href="/browse" class="btn-nav-gold" style="flex-shrink:0;">
+          View All <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <div id="book-results" class="book-list"></div>
+
+      <div id="loading" class="loading-msg" style="display:none;">
+        <i class="fa-solid fa-spinner fa-spin"></i> Loading books…
+      </div>
+
+      <div class="show-more-wrap">
+        <button id="show-more" class="btn-show-more" style="display:none;">
+          Load More Books <i class="fa-solid fa-chevron-down"></i>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Profile Modal ────────────────────────────────────────────── -->
+  <div id="profileModal" class="profileModal" role="dialog" aria-modal="true" aria-label="User profile">
+    <button class="modal-close" id="closeModal" aria-label="Close profile">&times;</button>
+    <div class="profile-avatar"><i class="fa-solid fa-user"></i></div>
+    <h3 id="modalUsername">Loading…</h3>
+    <div class="profile-field">
+      <div class="field-label">User ID</div>
+      <div class="field-value" id="modalUserId">—</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Email Address</div>
+      <div class="field-value" id="modalEmail">—</div>
+    </div>
+  </div>
+  <div id="modalBackdrop"></div>
+
+  <script src="/js/profile.js?v=<%= assetVersion %>"></script>
+  <script src="/js/dashboard.js?v=<%= assetVersion %>"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Log In — MyLibrary</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+  <link rel="stylesheet" href="/css/auth.css"/>
+  <link rel="stylesheet" href="/css/mobile-responsive.css"/>
+</head>
+<body>
+  <div class="auth-split">
+
+    <!-- Left panel -->
+    <div class="auth-panel">
+      <div class="auth-panel-content">
+        <div class="auth-logo">
+          <div class="auth-logo-icon"><i class="fa-solid fa-book-open"></i></div>
+          <div>
+            <span class="auth-logo-text">MyLibrary</span>
+            <span class="auth-logo-sub">Digital Collection</span>
+          </div>
+        </div>
+
+        <h2 class="auth-panel-headline">
+          Welcome<br/><em>Back</em> to Your<br/>Library.
+        </h2>
+        <p class="auth-panel-text">
+          Sign in to access your borrowed books, manage your reading list, and explore our catalog of over 131,000 titles.
+        </p>
+      </div>
+
+      <div class="auth-panel-footer">
+        <div class="auth-stat">
+          <i class="fa-solid fa-book auth-stat-icon"></i>
+          <div>
+            <div class="auth-stat-num">131,860</div>
+            <div class="auth-stat-label">Books in collection</div>
+          </div>
+        </div>
+        <div class="auth-stat">
+          <i class="fa-solid fa-users auth-stat-icon"></i>
+          <div>
+            <div class="auth-stat-num">Free</div>
+            <div class="auth-stat-label">Registration — no fees</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel — form -->
+    <div class="auth-form-panel">
+      <div class="auth-form-wrap">
+        <a href="/" class="auth-back">
+          <i class="fa-solid fa-arrow-left"></i>
+          Back to Home
+        </a>
+
+        <h1 class="auth-heading">Sign In</h1>
+        <p class="auth-sub">Enter your credentials to access your account.</p>
+
+        <% if (message) { %>
+          <div class="msg-error">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <%= message %>
+          </div>
+        <% } %>
+
+        <form action="/login" method="POST">
+          <div class="form-group">
+            <label class="form-label" for="username">Username</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-user icon-left"></i>
+              <input
+                class="form-input"
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Enter your username"
+                required
+                autocomplete="username"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-lock icon-left"></i>
+              <input
+                class="form-input"
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+                autocomplete="current-password"
+              />
+              <i class="fa-solid fa-eye icon-right" id="togglePassword"
+                 onclick="togglePassword('password','togglePassword')"></i>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-auth">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            Sign In
+          </button>
+        </form>
+
+        <div class="auth-links">
+          <div class="auth-link-line">
+            <a href="/forgot-password">Forgot your password?</a>
+          </div>
+          <div class="auth-link-line">
+            Don't have an account? <a href="/signup">Create one free</a>
+          </div>
+          <div class="auth-link-line">
+            <a href="/admin-login">Admin Login →</a>
+          </div>
+        </div>
+
+        <div class="divider">Didn't receive verification email?</div>
+
+        <div class="resend-box">
+          <p class="resend-label">Enter your email to resend the verification link:</p>
+          <form action="/resend-verification" method="POST" class="resend-row">
+            <input
+              type="email"
+              name="email"
+              placeholder="your@email.com"
+              class="resend-input"
+              required
+            />
+            <button type="submit" class="resend-btn">Resend</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/js/auth.js"></script>
+</body>
+</html>

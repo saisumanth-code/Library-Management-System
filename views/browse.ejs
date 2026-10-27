@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Browse Books — MyLibrary</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+  <link rel="stylesheet" href="/css/global.css?v=<%= assetVersion %>"/>
+  <link rel="stylesheet" href="/css/browse.css?v=<%= assetVersion %>"/>
+  <link rel="stylesheet" href="/css/mobile-responsive.css?v=<%= assetVersion %>"/>
+</head>
+<body>
+
+  <!-- ── Navbar ──────────────────────────────────────────────────── -->
+  <header>
+    <nav class="navbar">
+      <a href="/dashboard" class="nav-brand">
+        <div class="nav-brand-icon"><i class="fa-solid fa-book-open"></i></div>
+        <div>
+          <span class="nav-brand-name">MyLibrary</span>
+          <span class="nav-brand-sub">Digital Collection</span>
+        </div>
+      </a>
+
+      <div class="nav-divider"></div>
+
+      <div class="nav-right">
+        <a href="/dashboard" class="nav-link">
+          <i class="fa-solid fa-house"></i> Dashboard
+        </a>
+        <a href="/issued_books" class="nav-link">
+          <i class="fa-solid fa-book-open"></i> My Books
+        </a>
+        <button class="btn-profile" id="profileBtn" aria-label="View profile">
+          <i class="fa-solid fa-circle-user"></i>
+        </button>
+        <form action="/logout" method="POST" style="margin:0;">
+          <button type="submit" class="btn-nav-outline">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+          </button>
+        </form>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ── Browse Header / Search ───────────────────────────────────── -->
+  <div class="browse-header">
+    <div class="browse-title-row">
+      <h1>
+        <i class="fa-solid fa-magnifying-glass"></i>
+        Browse the Catalog
+      </h1>
+    </div>
+
+    <div class="search-wrap">
+      <span class="search-icon"><i class="fa-solid fa-search"></i></span>
+      <input
+        type="text"
+        id="search-input"
+        placeholder="Search by title, author, publisher…"
+        aria-label="Search books"
+        autocomplete="off"
+      />
+      <button id="search-btn" aria-label="Search">
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+
+    <div class="search-meta">
+      Showing results from <strong>131,860</strong> books in our collection
+    </div>
+  </div>
+
+  <!-- ── Alerts ───────────────────────────────────────────────────── -->
+  <% if (error === 'already_borrowed') { %>
+    <div class="alert-banner alert-warning">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      You have already borrowed this book. Please return it before borrowing again.
+    </div>
+  <% } else if (error === 'out_of_stock') { %>
+    <div class="alert-banner alert-error">
+      <i class="fa-solid fa-circle-xmark"></i>
+      Sorry, this book is currently out of stock. Please check back later.
+    </div>
+  <% } %>
+
+  <!-- ── Results ──────────────────────────────────────────────────── -->
+  <div class="browse-container">
+    <div class="results-label">
+      <i class="fa-solid fa-list"></i> Results
+    </div>
+
+    <div id="book-results" class="book-list"></div>
+
+    <div id="loading" class="loading-msg" style="display:none;">
+      <i class="fa-solid fa-spinner fa-spin"></i> Searching books…
+    </div>
+
+    <div class="show-more-wrap">
+      <button id="show-more" class="btn-show-more" style="display:none;">
+        Show More Results <i class="fa-solid fa-chevron-down"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Profile Modal ────────────────────────────────────────────── -->
+  <div id="profileModal" class="profileModal" role="dialog" aria-modal="true" aria-label="User profile">
+    <button class="modal-close" id="closeModal" aria-label="Close">&times;</button>
+    <div class="profile-avatar"><i class="fa-solid fa-user"></i></div>
+    <h3 id="modalUsername">Loading…</h3>
+    <div class="profile-field">
+      <div class="field-label">User ID</div>
+      <div class="field-value" id="modalUserId">—</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Email Address</div>
+      <div class="field-value" id="modalEmail">—</div>
+    </div>
+  </div>
+  <div id="modalBackdrop"></div>
+
+  <script src="/js/profile.js?v=<%= assetVersion %>"></script>
+  <script src="/js/browse.js?v=<%= assetVersion %>"></script>
+</body>
+</html>

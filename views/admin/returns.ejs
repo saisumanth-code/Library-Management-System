@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Return Requests</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+  <link rel="stylesheet" href="/css/global.css?v=<%= assetVersion %>"/>
+  <link rel="stylesheet" href="/css/admin.css?v=<%= assetVersion %>"/>
+  <link rel="stylesheet" href="/css/mobile-responsive.css?v=<%= assetVersion %>"/>
+</head>
+<body>
+  <%- include('./partials/navbar') %>
+
+  <div class="admin-container">
+    <h1 class="admin-heading">Return Requests</h1>
+    <p class="admin-heading-sub">Approve or decline student return confirmations.</p>
+
+    <% if (message) { %>
+      <% const isErrorMessage = /(fail|not found|error)/i.test(message); %>
+      <div class="alert-banner <%= isErrorMessage ? 'alert-error' : 'alert-success' %>"><%= message %></div>
+    <% } %>
+
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Book</th>
+            <th>Issued On</th>
+            <th>Due Date</th>
+            <th>Requested On</th>
+            <th>Fine Snapshot</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (!returnRequests || returnRequests.length === 0) { %>
+            <tr>
+              <td colspan="8" style="text-align:center;color:var(--text-muted);">No return requests available.</td>
+            </tr>
+          <% } %>
+
+          <% (returnRequests || []).forEach(record => { %>
+            <tr>
+              <td><%= record.username %></td>
+              <td><%= record.book_name %></td>
+              <td><%= record.issueDateFormatted %></td>
+              <td><%= record.dueDateFormatted %></td>
+              <td><%= record.requestDateFormatted %></td>
+              <td><%= record.fine > 0 ? `₹${record.fine}` : '-' %></td>
+              <td>
+                <% if (record.returnRequestStatus === 'pending') { %>
+                  <span class="badge badge-warning">Pending Confirmation</span>
+                <% } else if (record.returnRequestStatus === 'declined') { %>
+                  <span class="badge badge-danger">Declined</span>
+                <% } else { %>
+                  <span class="badge badge-success">N/A</span>
+                <% } %>
+              </td>
+              <td>
+                <% if (record.returnRequestStatus === 'pending') { %>
+                  <form action="/admin/returns/approve/<%= record._id %>" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-sm">Approve</button>
+                  </form>
+                  <form action="/admin/returns/decline/<%= record._id %>" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Decline</button>
+                  </form>
+                <% } else { %>
+                  <span style="color:var(--text-muted);font-size:0.78rem;">Already processed</span>
+                <% } %>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

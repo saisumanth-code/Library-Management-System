@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Issued Books</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+  <link rel="stylesheet" href="/css/global.css?v=<%= assetVersion %>"/>
+  <link rel="stylesheet" href="/css/admin.css?v=<%= assetVersion %>"/>
+  <link rel="stylesheet" href="/css/mobile-responsive.css?v=<%= assetVersion %>"/>
+</head>
+<body>
+  <%- include('./partials/navbar') %>
+  <div class="admin-container">
+    <h1 class="admin-heading">All Issued Books</h1>
+    <% if (message) { %>
+      <div class="alert-banner alert-success"><%= message %></div>
+    <% } %>
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr><th>User</th><th>Book</th><th>Issued On</th><th>Due Date</th><th>Status</th><th>Fine</th><th>Paid</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+          <% issuedBooks.forEach(record => { %>
+            <tr class="<%= record.overdue ? 'row-danger' : '' %>">
+              <td><%= record.username %></td>
+              <td><%= record.book_name %></td>
+              <td><%= record.issue_date %></td>
+              <td><%= record.due_date %></td>
+              <td>
+                <% if (record.returnRequestStatus === 'pending') { %>
+                  <span class="badge badge-warning">Return Requested <%= record.returnRequestedAtFormatted ? `(${record.returnRequestedAtFormatted})` : '' %></span>
+                <% } else if (record.overdue) { %>
+                  <span class="badge badge-danger">Overdue <%= Math.abs(record.daysLeft) %>d</span>
+                <% } else if (record.daysLeft === 0) { %>
+                  <span class="badge badge-warning">Due Today</span>
+                <% } else if (record.daysLeft <= 5) { %>
+                  <span class="badge badge-warning"><%= record.daysLeft %>d left</span>
+                <% } else { %>
+                  <span class="badge badge-success"><%= record.daysLeft %>d left</span>
+                <% } %>
+              </td>
+              <td><%= record.fine > 0 ? `₹${record.fine}` : '-' %></td>
+              <td><%= record.finePaid ? '✅ Paid' : (record.fine > 0 ? '❌ Unpaid' : '-') %></td>
+              <td>
+                <% if (record.returnRequestStatus === 'pending') { %>
+                  <span style="color:var(--text-muted);font-size:0.78rem;">Check Return Requests page</span>
+                <% } else if (record.fine > 0 && !record.finePaid) { %>
+                  <form action="/admin/fine/mark-paid/<%= record._id %>" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-sm">Mark Paid</button>
+                  </form>
+                <% } %>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

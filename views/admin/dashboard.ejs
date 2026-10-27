@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard — MyLibrary</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+  <link rel="stylesheet" href="/css/global.css?v=<%= assetVersion %>"/>
+  <link rel="stylesheet" href="/css/admin.css?v=<%= assetVersion %>"/>
+  <link rel="stylesheet" href="/css/mobile-responsive.css?v=<%= assetVersion %>"/>
+</head>
+<body>
+
+  <%- include('./partials/navbar') %>
+
+  <div class="admin-container">
+
+    <!-- Header -->
+    <div class="admin-page-header">
+      <div class="admin-breadcrumb">
+        <i class="fa-solid fa-house"></i> Home
+        <i class="fa-solid fa-chevron-right"></i> Dashboard
+      </div>
+      <h1 class="admin-heading">Admin Dashboard</h1>
+      <p class="admin-heading-sub">System overview and quick management tools.</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+        <div class="stat-body">
+          <div class="stat-value"><%= totalUsers %></div>
+          <div class="stat-label">Registered Users</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-book"></i></div>
+        <div class="stat-body">
+          <div class="stat-value"><%= totalBooks %></div>
+          <div class="stat-label">Books in Catalog</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon stat-success"><i class="fa-solid fa-book-open"></i></div>
+        <div class="stat-body">
+          <div class="stat-value"><%= totalIssued %></div>
+          <div class="stat-label">Currently Issued</div>
+        </div>
+      </div>
+
+      <div class="stat-card stat-danger">
+        <div class="stat-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="stat-body">
+          <div class="stat-value"><%= overdueBooks %></div>
+          <div class="stat-label">Overdue Books</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-rotate-left"></i></div>
+        <div class="stat-body">
+          <div class="stat-value"><%= pendingReturns || 0 %></div>
+          <div class="stat-label">Pending Return Requests</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="quick-links">
+      <a href="/admin/books" class="quick-btn">
+        <i class="fa-solid fa-book"></i>
+        <span>Manage Books</span>
+        <i class="fa-solid fa-arrow-right quick-btn-arrow"></i>
+      </a>
+      <a href="/admin/users" class="quick-btn">
+        <i class="fa-solid fa-users"></i>
+        <span>Manage Users</span>
+        <i class="fa-solid fa-arrow-right quick-btn-arrow"></i>
+      </a>
+      <a href="/admin/issued" class="quick-btn">
+        <i class="fa-solid fa-list-check"></i>
+        <span>Issued Records</span>
+        <i class="fa-solid fa-arrow-right quick-btn-arrow"></i>
+      </a>
+      <a href="/admin/returns" class="quick-btn">
+        <i class="fa-solid fa-rotate-left"></i>
+        <span>Return Requests</span>
+        <i class="fa-solid fa-arrow-right quick-btn-arrow"></i>
+      </a>
+    </div>
+
+    <!-- Summary Panel -->
+    <div class="admin-panel">
+      <div class="admin-panel-header">
+        <h2 class="admin-panel-title">
+          <i class="fa-solid fa-chart-bar"></i>
+          Library at a Glance
+        </h2>
+      </div>
+      <div class="admin-summary-grid">
+        <div class="admin-summary-tile">
+          <div class="admin-summary-value admin-summary-value-primary">
+            <%= Math.round((totalIssued / (totalBooks || 1)) * 100) %>%
+          </div>
+          <div class="admin-summary-label">Books In Circulation</div>
+        </div>
+        <div class="admin-summary-tile">
+          <div class="admin-summary-value admin-summary-value-danger">
+            <%= overdueBooks %>
+          </div>
+          <div class="admin-summary-label">Overdue Right Now</div>
+        </div>
+        <div class="admin-summary-tile">
+          <div class="admin-summary-value admin-summary-value-success">
+            <%= totalBooks - totalIssued %>
+          </div>
+          <div class="admin-summary-label">Available to Borrow</div>
+        </div>
+        <div class="admin-summary-tile">
+          <div class="admin-summary-value admin-summary-value-gold">
+            <%= totalUsers %>
+          </div>
+          <div class="admin-summary-label">Total Members</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

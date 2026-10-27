@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Login — MyLibrary</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+  <link rel="stylesheet" href="/css/auth.css"/>
+</head>
+<body>
+  <div class="auth-split">
+
+    <!-- Left panel — Admin themed -->
+    <div class="auth-panel" style="background:linear-gradient(170deg,rgba(13,27,42,0.97),rgba(13,27,42,0.92)),url('/images/lib.webp') center/cover no-repeat;">
+      <div class="auth-panel-content">
+        <div class="auth-logo">
+          <div class="auth-logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <div>
+            <span class="auth-logo-text">MyLibrary</span>
+            <span class="auth-logo-sub">Administration</span>
+          </div>
+        </div>
+        <h2 class="auth-panel-headline">
+          Restricted<br/><em>Admin</em><br/>Access.
+        </h2>
+        <p class="auth-panel-text">
+          This area is for authorised library administrators only. Manage books, users, borrowing records, and system settings.
+        </p>
+      </div>
+      <div class="auth-panel-footer">
+        <div class="auth-stat">
+          <i class="fa-solid fa-users-gear auth-stat-icon"></i>
+          <div>
+            <div class="auth-stat-num">Full</div>
+            <div class="auth-stat-label">System administration access</div>
+          </div>
+        </div>
+        <div class="auth-stat">
+          <i class="fa-solid fa-lock auth-stat-icon"></i>
+          <div>
+            <div class="auth-stat-num">Secure</div>
+            <div class="auth-stat-label">Restricted to admins only</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel -->
+    <div class="auth-form-panel">
+      <div class="auth-form-wrap">
+        <a href="/login" class="auth-back">
+          <i class="fa-solid fa-arrow-left"></i>
+          User Login
+        </a>
+
+        <h1 class="auth-heading">Admin Sign In</h1>
+        <p class="auth-sub">Enter your administrator credentials to proceed.</p>
+
+        <% if (typeof message !== 'undefined' && message) { %>
+          <div class="msg-error">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <%= message %>
+          </div>
+        <% } %>
+
+        <form action="/admin-login" method="POST">
+          <div class="form-group">
+            <label class="form-label" for="username">Admin Username</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-shield-halved icon-left"></i>
+              <input
+                class="form-input"
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Enter admin username"
+                required
+                autocomplete="username"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">Admin Password</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-lock icon-left"></i>
+              <input
+                class="form-input"
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter admin password"
+                required
+                autocomplete="current-password"
+              />
+              <i class="fa-solid fa-eye icon-right" id="togglePassword"
+                 onclick="togglePassword('password','togglePassword')"></i>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-auth" style="background:linear-gradient(135deg,#1a3356,#0d1b2a);">
+            <i class="fa-solid fa-shield-halved"></i>
+            Sign In as Admin
+          </button>
+        </form>
+
+        <div class="auth-links">
+          <div class="auth-link-line">
+            Not an admin? <a href="/login">Member login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/js/auth.js"></script>
+</body>
+</html>

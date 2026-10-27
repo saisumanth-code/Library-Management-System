@@ -1,0 +1,36 @@
+<nav class="navbar admin-navbar">
+  <a href="/admin/dashboard" class="nav-brand">
+    <div class="nav-brand-icon"><i class="fa-solid fa-book-open"></i></div>
+    <div>
+      <span class="nav-brand-name">MyLibrary</span>
+      <span class="nav-brand-sub">Admin Panel</span>
+    </div>
+  </a>
+
+  <span class="admin-badge">ADMIN</span>
+
+  <div class="nav-divider" style="margin-left:8px;"></div>
+
+  <div class="nav-right">
+    <a href="/admin/dashboard" class="nav-link">
+      <i class="fa-solid fa-chart-pie"></i> Dashboard
+    </a>
+    <a href="/admin/books" class="nav-link">
+      <i class="fa-solid fa-book"></i> Books
+    </a>
+    <a href="/admin/users" class="nav-link">
+      <i class="fa-solid fa-users"></i> Users
+    </a>
+    <a href="/admin/issued" class="nav-link">
+      <i class="fa-solid fa-list-check"></i> Issued
+    </a>
+    <a href="/admin/returns" class="nav-link">
+      <i class="fa-solid fa-rotate-left"></i> Returns
+    </a>
+    <form action="/admin/logout" method="POST" style="margin:0;">
+      <button type="submit" class="btn-nav-outline">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+      </button>
+    </form>
+  </div>
+</nav>

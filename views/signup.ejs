@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Account — MyLibrary</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+  <link rel="stylesheet" href="/css/auth.css"/>
+  <link rel="stylesheet" href="/css/mobile-responsive.css"/>
+</head>
+<body>
+  <div class="auth-split">
+
+    <!-- Left panel -->
+    <div class="auth-panel">
+      <div class="auth-panel-content">
+        <div class="auth-logo">
+          <div class="auth-logo-icon"><i class="fa-solid fa-book-open"></i></div>
+          <div>
+            <span class="auth-logo-text">MyLibrary</span>
+            <span class="auth-logo-sub">Digital Collection</span>
+          </div>
+        </div>
+
+        <h2 class="auth-panel-headline">
+          Start Your<br/><em>Reading</em><br/>Journey Today.
+        </h2>
+        <p class="auth-panel-text">
+          Join thousands of readers who use MyLibrary every day. Free registration, instant access, no fees ever.
+        </p>
+      </div>
+
+      <div class="auth-panel-footer">
+        <div class="auth-stat">
+          <i class="fa-solid fa-book-open-reader auth-stat-icon"></i>
+          <div>
+            <div class="auth-stat-num">14 Days</div>
+            <div class="auth-stat-label">Default borrow period</div>
+          </div>
+        </div>
+        <div class="auth-stat">
+          <i class="fa-solid fa-bell auth-stat-icon"></i>
+          <div>
+            <div class="auth-stat-num">Auto</div>
+            <div class="auth-stat-label">Due date reminders via email</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel — form -->
+    <div class="auth-form-panel">
+      <div class="auth-form-wrap">
+        <a href="/" class="auth-back">
+          <i class="fa-solid fa-arrow-left"></i>
+          Back to Home
+        </a>
+
+        <h1 class="auth-heading">Create Account</h1>
+        <p class="auth-sub">Fill in the details below to get started for free.</p>
+
+        <% if (message) { %>
+          <div class="<%= type === 'success' ? 'msg-success' : 'msg-error' %>">
+            <i class="fa-solid fa-<%= type === 'success' ? 'circle-check' : 'circle-exclamation' %>"></i>
+            <%= message %>
+          </div>
+        <% } %>
+
+        <form action="/signup" method="POST">
+          <div class="form-group">
+            <label class="form-label" for="username">Username</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-user icon-left"></i>
+              <input
+                class="form-input"
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Choose a username"
+                required
+                autocomplete="username"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-envelope icon-left"></i>
+              <input
+                class="form-input no-right-icon"
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter a valid email"
+                required
+                autocomplete="email"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-lock icon-left"></i>
+              <input
+                class="form-input"
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Create a strong password"
+                required
+                autocomplete="new-password"
+              />
+              <i class="fa-solid fa-eye icon-right" id="togglePassword"
+                 onclick="togglePassword('password','togglePassword')"></i>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="confirmPassword">Confirm Password</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-lock icon-left"></i>
+              <input
+                class="form-input"
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Repeat your password"
+                required
+                autocomplete="new-password"
+              />
+              <i class="fa-solid fa-eye icon-right" id="toggleConfirmPassword"
+                 onclick="togglePassword('confirmPassword','toggleConfirmPassword')"></i>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-auth">
+            <i class="fa-solid fa-user-plus"></i>
+            Create Account
+          </button>
+        </form>
+
+        <div class="auth-links">
+          <div class="auth-link-line">
+            Already have an account? <a href="/login">Sign in</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/js/auth.js"></script>
+</body>
+</html>

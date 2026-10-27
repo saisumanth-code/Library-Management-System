@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Issued Books — MyLibrary</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+  <link rel="stylesheet" href="/css/global.css?v=<%= assetVersion %>"/>
+  <link rel="stylesheet" href="/css/issued_books.css?v=<%= assetVersion %>"/>
+  <link rel="stylesheet" href="/css/mobile-responsive.css?v=<%= assetVersion %>"/>
+</head>
+<body>
+
+  <!-- ── Navbar ──────────────────────────────────────────────────── -->
+  <header>
+    <nav class="navbar">
+      <a href="/dashboard" class="nav-brand">
+        <div class="nav-brand-icon"><i class="fa-solid fa-book-open"></i></div>
+        <div>
+          <span class="nav-brand-name">MyLibrary</span>
+          <span class="nav-brand-sub">Digital Collection</span>
+        </div>
+      </a>
+
+      <div class="nav-divider"></div>
+
+      <div class="nav-right">
+        <a href="/dashboard" class="nav-link">
+          <i class="fa-solid fa-house"></i> Dashboard
+        </a>
+        <a href="/browse" class="nav-link">
+          <i class="fa-solid fa-magnifying-glass"></i> Browse
+        </a>
+        <button class="btn-profile" id="profileBtn" aria-label="View profile">
+          <i class="fa-solid fa-circle-user"></i>
+        </button>
+        <form action="/logout" method="POST" style="margin:0;">
+          <button type="submit" class="btn-nav-outline">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+          </button>
+        </form>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ── Main ────────────────────────────────────────────────────── -->
+  <main class="issued-container">
+
+    <% if (message) { %>
+      <div class="alert-banner <%= type === 'error' ? 'alert-error' : 'alert-success' %>">
+        <i class="fa-solid <%= type === 'error' ? 'fa-circle-xmark' : 'fa-circle-check' %>"></i>
+        <%= message %>
+      </div>
+    <% } %>
+
+    <div class="issued-header">
+      <h2>
+        <i class="fa-solid fa-book-open" style="color:var(--gold);font-size:1.6rem;"></i>
+        My Issued Books
+        <span class="book-count-badge">
+          <%= issuedBooks.length %> book<%= issuedBooks.length !== 1 ? 's' : '' %>
+        </span>
+      </h2>
+      <a href="/browse" class="btn-gold">
+        <i class="fa-solid fa-plus"></i> Borrow More
+      </a>
+    </div>
+
+    <% if (issuedBooks && issuedBooks.length > 0) { %>
+      <div class="issued-book-list">
+        <% issuedBooks.forEach(book => { %>
+          <div class="issued-card <%= book.overdue ? 'overdue-card' : '' %>">
+            <img
+              src="<%= book.cover_image || '/images/default-cover.svg' %>"
+              alt="Cover of <%= book.title %>"
+              loading="lazy"
+            />
+
+            <div class="issued-details">
+              <div class="issued-title"><%= book.title %></div>
+
+              <div class="issued-meta">
+                <div class="issued-meta-item">
+                  <strong>Author</strong><br/><%= book.author || 'N/A' %>
+                </div>
+                <div class="issued-meta-item">
+                  <strong>Publisher</strong><br/><%= book.publisher || 'N/A' %>
+                </div>
+                <div class="issued-meta-item">
+                  <strong>Issued On</strong><br/><%= book.issue_date %>
+                </div>
+                <div class="issued-meta-item">
+                  <strong>Due Date</strong><br/><%= book.due_date %>
+                </div>
+                <div class="issued-meta-item" style="grid-column:1/-1;">
+                  <strong>Book ID</strong><br/><span style="font-family:monospace;font-size:0.78rem;"><%= book.book_id %></span>
+                </div>
+              </div>
+
+              <!-- Status Badge -->
+              <% if (book.overdue) { %>
+                <div class="badge badge-danger">
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                  Overdue by <%= Math.abs(book.daysLeft) %> day(s)
+                  &nbsp;·&nbsp;
+                  Fine: ₹<%= book.fine %>
+                  <% if (book.finePaid) { %>
+                    &nbsp;·&nbsp; <span style="color:#065F46;">✓ Fine Paid</span>
+                  <% } else { %>
+                    &nbsp;·&nbsp; <span style="opacity:0.75;">(Pay at counter)</span>
+                  <% } %>
+                </div>
+              <% } else if (book.daysLeft === 0) { %>
+                <div class="badge badge-today">
+                  <i class="fa-solid fa-clock"></i>
+                  Due Today — Return immediately to avoid a fine
+                </div>
+              <% } else if (book.daysLeft <= 5) { %>
+                <div class="badge badge-warn">
+                  <i class="fa-solid fa-hourglass-half"></i>
+                  Only <%= book.daysLeft %> day<%= book.daysLeft !== 1 ? 's' : '' %> remaining
+                </div>
+              <% } else { %>
+                <div class="badge badge-success">
+                  <i class="fa-solid fa-circle-check"></i>
+                  <%= book.daysLeft %> days remaining
+                </div>
+              <% } %>
+
+              <% if (book.returnRequestStatus === 'pending') { %>
+                <div class="badge badge-warning" style="margin-top:10px;">
+                  <i class="fa-solid fa-hourglass-half"></i>
+                  Return request pending admin confirmation
+                  <% if (book.returnRequestedAt) { %>
+                    &nbsp;·&nbsp; Requested on <%= book.returnRequestedAt %>
+                  <% } %>
+                </div>
+              <% } else if (book.returnRequestStatus === 'declined') { %>
+                <div class="badge badge-danger" style="margin-top:10px;">
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                  Previous return request was declined. Please submit again after handing over the book.
+                </div>
+              <% } %>
+            </div>
+
+            <div class="issued-actions">
+              <form method="POST" action="/return">
+                <input type="hidden" name="book_id" value="<%= book.book_id %>"/>
+                <button type="submit" class="btn-return" <%= book.returnRequestStatus === 'pending' ? 'disabled style="opacity:0.6;cursor:not-allowed;"' : '' %>>
+                  <i class="fa-solid fa-rotate-left"></i>
+                  <%= book.returnRequestStatus === 'pending' ? 'Waiting for Admin' : 'Request Return' %>
+                </button>
+              </form>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+
+    <% } else { %>
+      <div class="empty-state">
+        <div class="empty-state-icon">
+          <i class="fa-solid fa-book-open"></i>
+        </div>
+        <h3>No Books Issued</h3>
+        <p>You haven't borrowed any books yet. Explore our catalog and find something great to read.</p>
+        <a href="/browse" class="btn-gold">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          Browse the Catalog
+        </a>
+      </div>
+    <% } %>
+
+  </main>
+
+  <!-- ── Profile Modal ────────────────────────────────────────────── -->
+  <div id="profileModal" class="profileModal" role="dialog" aria-modal="true" aria-label="User profile">
+    <button class="modal-close" id="closeModal" aria-label="Close">&times;</button>
+    <div class="profile-avatar"><i class="fa-solid fa-user"></i></div>
+    <h3 id="modalUsername">Loading…</h3>
+    <div class="profile-field">
+      <div class="field-label">User ID</div>
+      <div class="field-value" id="modalUserId">—</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Email Address</div>
+      <div class="field-value" id="modalEmail">—</div>
+    </div>
+  </div>
+  <div id="modalBackdrop"></div>
+
+  <script src="/js/profile.js?v=<%= assetVersion %>"></script>
+</body>
+</html>
